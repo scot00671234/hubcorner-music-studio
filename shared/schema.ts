@@ -16,6 +16,37 @@ export const tracks = pgTable("tracks", {
     bridge: { start: number; end: number };
     outro: { start: number; end: number };
   }>().notNull(),
+  settings: json("settings").$type<{
+    bass: number;        // 0-100
+    pace: number;        // 60-180 BPM  
+    reverb: number;      // 0-100
+    distortion: number;  // 0-100
+    fadeIn: number;      // 0-10 seconds
+    fadeOut: number;     // 0-10 seconds
+    instruments: {
+      drums: boolean;
+      bass: boolean;
+      synths: boolean;
+      pads: boolean;
+      arps: boolean;
+    };
+    mood: string;        // dreamy, dark, uplifting, melancholic
+  }>().default({
+    bass: 50,
+    pace: 85,
+    reverb: 70,
+    distortion: 20,
+    fadeIn: 3,
+    fadeOut: 3,
+    instruments: {
+      drums: true,
+      bass: true,
+      synths: true,
+      pads: true,
+      arps: false
+    },
+    mood: "dreamy"
+  }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

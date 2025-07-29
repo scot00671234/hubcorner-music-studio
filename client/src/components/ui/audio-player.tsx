@@ -43,6 +43,14 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
         audio.pause();
         setIsPlaying(false);
       } else {
+        // Ensure audio is loaded
+        if (audio.readyState < 2) {
+          await new Promise((resolve) => {
+            audio.addEventListener('canplay', resolve, { once: true });
+            audio.load();
+          });
+        }
+        
         await audio.play();
         setIsPlaying(true);
       }
@@ -50,7 +58,7 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
       console.error("Audio playback error:", error);
       toast({
         title: "Playback Error",
-        description: "Failed to play audio. Please try again.",
+        description: "Failed to play audio. Please try downloading the file instead.",
         variant: "destructive",
       });
     }

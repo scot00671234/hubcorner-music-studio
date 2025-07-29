@@ -51,8 +51,26 @@ export class MemStorage implements IStorage {
 
   async createTrack(insertTrack: InsertTrack): Promise<Track> {
     const id = randomUUID();
+    const defaultSettings = {
+      bass: 50,
+      pace: 85,
+      reverb: 70,
+      distortion: 20,
+      fadeIn: 3,
+      fadeOut: 3,
+      instruments: {
+        drums: true,
+        bass: true,
+        synths: true,
+        pads: true,
+        arps: false
+      },
+      mood: "dreamy"
+    };
+    
     const track: Track = { 
-      ...insertTrack, 
+      ...insertTrack,
+      settings: insertTrack.settings || defaultSettings,
       id, 
       createdAt: new Date()
     };

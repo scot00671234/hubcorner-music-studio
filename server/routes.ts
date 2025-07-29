@@ -47,10 +47,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Generate new song
   app.post("/api/generate", async (req, res) => {
     try {
-      console.log("Starting song generation...");
+      console.log("Starting song generation with custom settings...");
+      const musicSettings = req.body || {};
       
-      // Generate the song using AI
-      const { audioBuffer, metadata } = await musicGenerator.generateSong();
+      // Generate the song using AI with custom settings
+      const { audioBuffer, metadata } = await musicGenerator.generateSong(musicSettings);
       
       // Process audio with Whitearmor-style effects
       const processedAudio = await audioProcessor.applyWhitearmorEffects(audioBuffer);
@@ -67,6 +68,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         duration: metadata.duration,
         filePath: `/uploads/${fileName}`,
         structure: metadata.structure,
+        settings: musicSettings,
       };
 
       const track = await storage.createTrack(trackData);
