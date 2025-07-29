@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Wand2, Loader2 } from "lucide-react";
+import { Wand2, Loader2, Edit3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { AudioPlayer } from "@/components/ui/audio-player";
 import { MusicDashboard } from "@/components/ui/music-dashboard";
 import { apiRequest } from "@/lib/queryClient";
@@ -23,6 +24,7 @@ interface MusicSettings {
     arps: boolean;
   };
   mood: string;
+  customPrompt?: string;
 }
 
 export function GenerationInterface() {
@@ -41,7 +43,8 @@ export function GenerationInterface() {
       pads: true,
       arps: false
     },
-    mood: "dreamy"
+    mood: "dreamy",
+    customPrompt: ""
   });
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -97,6 +100,24 @@ export function GenerationInterface() {
             <AudioPlayer track={currentTrack} />
           </div>
         )}
+
+        {/* Custom Prompt Section */}
+        <div className="mb-6">
+          <div className="flex items-center space-x-2 mb-3">
+            <Edit3 size={16} className="text-[hsl(351,78%,62%)]" />
+            <label className="text-sm font-medium text-white">Custom Prompt (Optional)</label>
+          </div>
+          <Textarea
+            value={settings.customPrompt || ""}
+            onChange={(e) => setSettings({...settings, customPrompt: e.target.value})}
+            placeholder="Write your own prompt like: dreamy ambient trap beat, heavy reverb, slow BPM, ethereal atmosphere..."
+            className="bg-black/30 border-white/20 text-white placeholder-[hsl(0,0%,55%)] focus:border-[hsl(351,78%,62%)] focus:ring-[hsl(351,78%,62%)]/20 min-h-[80px] resize-none"
+            rows={3}
+          />
+          <p className="text-xs text-[hsl(0,0%,55%)] mt-2">
+            Leave empty to use automatic prompts based on your mood and settings above
+          </p>
+        </div>
 
         {/* Generation Button */}
         <div className="text-center">

@@ -31,6 +31,7 @@ export const tracks = pgTable("tracks", {
       arps: boolean;
     };
     mood: string;        // dreamy, dark, uplifting, melancholic
+    customPrompt?: string; // Optional custom prompt override
   }>().default({
     bass: 50,
     pace: 85,
@@ -88,4 +89,5 @@ export type GenerationSettings = {
     arps: boolean;
   };
   mood: string;        // dreamy, dark, uplifting, melancholic, ethereal, nostalgic
+  customPrompt?: string; // Optional custom prompt override
 };

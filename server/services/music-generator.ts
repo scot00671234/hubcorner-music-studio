@@ -116,6 +116,11 @@ export class MusicGenerator {
   }
 
   private createEvolutionaryPrompt(settings: GenerationSettings): string {
+    // If user provided a custom prompt, use it with minimal evolution prefix
+    if (settings.customPrompt && settings.customPrompt.trim()) {
+      return `Generation ${this.generationCount}: ${settings.customPrompt.trim()}`;
+    }
+    
     // Create more sophisticated prompts based on generation count and evolution
     const evolutionaryTerms = [
       `Generation ${this.generationCount}: evolved complexity`,
@@ -266,6 +271,12 @@ export class MusicGenerator {
   }
 
   private createCustomPrompt(settings: any): string {
+    // If user provided a custom prompt, use it directly
+    if (settings.customPrompt && settings.customPrompt.trim()) {
+      return settings.customPrompt.trim();
+    }
+    
+    // Otherwise, generate automatic prompt based on settings
     let basePrompt = this.getRandomPrompt();
     
     if (settings.mood) {

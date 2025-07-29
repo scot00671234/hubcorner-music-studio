@@ -233,3 +233,19 @@ The system now rivals professional DAW capabilities while maintaining the simple
 - **Infinite Variation**: Mathematical guarantee that each generation produces unique compositions
 
 The system now uses cutting-edge machine learning to ensure every generated song is completely unique while maintaining professional quality and authentic Whitearmor-style characteristics. The AI continuously evolves and learns, creating better music with each generation.
+
+## Latest Updates (January 29, 2025 - Custom Prompt Feature)
+
+✓ **Custom Prompt Input**: Added user-customizable prompt textbox feature:
+  - Optional custom prompt textbox with placeholder examples
+  - When empty, uses automatic prompt generation based on mood/settings
+  - When filled, uses user's custom prompt directly for music generation
+  - Elegant textarea with Whitearmor-themed styling and helpful instructions
+✓ **Backend Integration**: Updated music generation system to prioritize user prompts:
+  - Modified createCustomPrompt() to check for custom prompts first
+  - Enhanced evolutionary prompt system to work with custom user input
+  - Maintains fallback to hardcoded prompts when no custom prompt provided
+✓ **Schema Enhancement**: Extended GenerationSettings type to include customPrompt field
+  - Added optional customPrompt field to both frontend and backend schemas
+  - Maintained backward compatibility with existing generation system
+  - Updated database storage to preserve custom prompts in track metadata
