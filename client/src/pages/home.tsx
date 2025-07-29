@@ -2,6 +2,7 @@ import { Music, Settings, HelpCircle } from "lucide-react";
 import { GenerationInterface } from "@/components/ui/generation-interface";
 import { SongStructure } from "@/components/ui/song-structure";
 import { RecentTracks } from "@/components/ui/recent-tracks";
+import { RealTimeEditor } from "@/components/ui/real-time-editor";
 
 export default function Home() {
   return (
@@ -57,7 +58,12 @@ export default function Home() {
           <GenerationInterface />
 
           {/* Song Structure Preview */}
-          <SongStructure />
+          <SongStructure isEditable={true} />
+
+          {/* Real-Time Editor */}
+          <div className="mb-8">
+            <RealTimeEditor track={null} />
+          </div>
 
           {/* Recent Generations */}
           <RecentTracks />

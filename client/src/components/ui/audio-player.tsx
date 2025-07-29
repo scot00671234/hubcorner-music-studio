@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Download, Share } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Waveform } from "@/components/ui/waveform";
-import { useAudio } from "@/hooks/use-audio";
 import { useToast } from "@/hooks/use-toast";
 import type { Track } from "@shared/schema";
 
@@ -14,9 +13,9 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
   const { toast } = useToast();
-
-  const { analyser, audioContext } = useAudio(audioRef.current);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -117,7 +116,7 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
       
       {/* Waveform Visualization */}
       <div className="bg-black/30 rounded-lg p-4 mb-4">
-        <Waveform analyser={analyser} isPlaying={isPlaying} />
+        <Waveform analyser={analyserRef.current} isPlaying={isPlaying} />
       </div>
 
       {/* Audio Controls */}
