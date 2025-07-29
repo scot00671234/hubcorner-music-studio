@@ -6,6 +6,8 @@ import { existsSync } from "fs";
 import { GenerationSettings } from "@shared/schema";
 import { AdvancedMusicGenerator } from "./advanced-music-generator";
 import { NeuralComposer } from "./neural-composer";
+import { MusicTheoryEngine, ProfessionalSynthEngine } from "./professional-music-engine";
+import { ProfessionalAudioRenderer } from "./professional-audio-renderer";
 
 interface GenerationMetadata {
   title: string;
@@ -223,23 +225,121 @@ export class MusicGenerator {
   }
 
   private async generateEnhancedFallback(settings: GenerationSettings): Promise<{ audioBuffer: Buffer; metadata: GenerationMetadata }> {
-    console.log("Using enhanced fallback generation with improved algorithms");
+    console.log("Using professional music generation with advanced algorithms");
     
     const prompt = this.createCustomPrompt(settings);
-    const title = this.getRandomTitle();
-    const duration = this.getRandomDuration();
     
-    // Use enhanced synthesis as fallback
-    const audioBuffer = await this.generatePlaceholderAudio(duration, settings);
+    // Step 1: Analyze prompt using professional music theory
+    console.log(`Analyzing custom prompt: "${prompt}"`);
+    const musicAnalysis = MusicTheoryEngine.analyzePromptAdvanced(prompt, settings);
+    
+    console.log(`Music Theory Analysis:`);
+    console.log(`- Key: ${musicAnalysis.key} (${musicAnalysis.mood} mood)`);
+    console.log(`- Chord Progression: ${musicAnalysis.chordProgression.map(c => c.chord).join(' → ')}`);
+    console.log(`- Tempo: ${musicAnalysis.tempo} BPM`);
+    console.log(`- Style: ${musicAnalysis.style}`);
+    console.log(`- Structure: ${musicAnalysis.songStructure.form}`);
+    
+    // Step 2: Create professional synthesis layers
+    const synthLayers = ProfessionalSynthEngine.createSynthLayers(musicAnalysis, settings);
+    console.log(`Created ${synthLayers.length} professional synthesis layers:`);
+    synthLayers.forEach(layer => {
+      console.log(`- ${layer.type}: ${layer.oscillator} oscillator, ${layer.volume} volume`);
+    });
+    
+    // Step 3: Calculate professional song duration
+    const duration = this.calculateProfessionalDuration(musicAnalysis, settings);
+    
+    // Step 4: Render professional audio
+    console.log(`Rendering professional audio composition (${duration}s)...`);
+    const audioBuffer = await ProfessionalAudioRenderer.renderComposition(
+      musicAnalysis,
+      synthLayers,
+      settings,
+      duration
+    );
+    
+    // Step 5: Generate professional song structure
+    const songStructure = this.createProfessionalSongStructure(duration, musicAnalysis);
     
     const metadata: GenerationMetadata = {
-      title: `${title} #${Math.floor(Math.random() * 999) + 1}`,
-      prompt: `Enhanced fallback: ${prompt}`,
+      title: `${this.getRandomTitle()} #${Math.floor(Math.random() * 999) + 1}`,
+      prompt: `Professional: ${prompt}`,
       duration,
-      structure: this.generateSongStructure(duration)
+      structure: songStructure
     };
 
+    console.log(`Successfully generated professional composition with music theory!`);
     return { audioBuffer, metadata };
+  }
+
+  private calculateProfessionalDuration(musicAnalysis: any, settings: GenerationSettings): number {
+    // Base duration on music theory analysis
+    let baseDuration = 120;
+    
+    // Adjust for tempo (slower = longer pieces)
+    if (musicAnalysis.tempo < 80) baseDuration *= 1.3;
+    else if (musicAnalysis.tempo > 120) baseDuration *= 0.8;
+    
+    // Adjust for mood
+    const moodMultipliers = {
+      dreamy: 1.2,
+      dark: 1.1,
+      uplifting: 0.9,
+      melancholic: 1.3,
+      ethereal: 1.4,
+      nostalgic: 1.1
+    };
+    
+    const multiplier = moodMultipliers[musicAnalysis.mood as keyof typeof moodMultipliers] || 1.0;
+    baseDuration *= multiplier;
+    
+    // Add variation based on song structure
+    const structureMultiplier = musicAnalysis.songStructure.totalBars / 48; // Normalize to 48 bars
+    baseDuration *= structureMultiplier;
+    
+    return Math.min(180, Math.max(90, Math.floor(baseDuration)));
+  }
+
+  private createProfessionalSongStructure(duration: number, musicAnalysis: any) {
+    const sections = musicAnalysis.songStructure.sections;
+    
+    // Convert bar-based structure to time-based structure
+    const beatsPerSecond = musicAnalysis.tempo / 60;
+    const barDuration = 4 / beatsPerSecond; // 4 beats per bar
+    
+    let currentTime = 0;
+    
+    const intro = {
+      start: currentTime,
+      end: currentTime + (sections.intro.bars * barDuration)
+    };
+    currentTime = intro.end;
+    
+    const verse = {
+      start: currentTime,
+      end: currentTime + (sections.verse.bars * barDuration)
+    };
+    currentTime = verse.end;
+    
+    const hook = {
+      start: currentTime,
+      end: currentTime + (sections.chorus?.bars || sections.verse.bars) * barDuration
+    };
+    currentTime = hook.end;
+    
+    const bridge = {
+      start: currentTime,
+      end: currentTime + (sections.bridge?.bars || sections.verse.bars * 0.5) * barDuration
+    };
+    currentTime = bridge.end;
+    
+    const outro = {
+      start: currentTime,
+      end: duration
+    };
+    
+    return { intro, verse, hook, bridge, outro };
   }
 
 
