@@ -71,3 +71,21 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+// Generation settings type for music generation
+export type GenerationSettings = {
+  bass: number;        // 0-100
+  pace: number;        // 60-180 BPM  
+  reverb: number;      // 0-100
+  distortion: number;  // 0-100
+  fadeIn: number;      // 0-10 seconds
+  fadeOut: number;     // 0-10 seconds
+  instruments: {
+    drums: boolean;
+    bass: boolean;
+    synths: boolean;
+    pads: boolean;
+    arps: boolean;
+  };
+  mood: string;        // dreamy, dark, uplifting, melancholic, ethereal, nostalgic
+};
