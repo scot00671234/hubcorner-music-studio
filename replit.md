@@ -237,15 +237,17 @@ The system now uses cutting-edge machine learning to ensure every generated song
 ## Latest Updates (January 29, 2025 - Custom Prompt Feature)
 
 ✓ **Custom Prompt Input**: Added user-customizable prompt textbox feature:
-  - Optional custom prompt textbox with placeholder examples
-  - When empty, uses automatic prompt generation based on mood/settings
-  - When filled, uses user's custom prompt directly for music generation
-  - Elegant textarea with Whitearmor-themed styling and helpful instructions
-✓ **Backend Integration**: Updated music generation system to prioritize user prompts:
-  - Modified createCustomPrompt() to check for custom prompts first
-  - Enhanced evolutionary prompt system to work with custom user input
-  - Maintains fallback to hardcoded prompts when no custom prompt provided
-✓ **Schema Enhancement**: Extended GenerationSettings type to include customPrompt field
-  - Added optional customPrompt field to both frontend and backend schemas
-  - Maintained backward compatibility with existing generation system
-  - Updated database storage to preserve custom prompts in track metadata
+  - Required custom prompt textbox with helpful examples and guidance
+  - User must write their own prompt to describe desired music style
+  - Elegant textarea with Whitearmor-themed styling and validation feedback
+  - Clear instructions and placeholder examples for user guidance
+✓ **Complete Hardcoded Prompt Removal**: Eliminated all hardcoded prompts from system:
+  - Removed whiteArmorPrompts array and all automatic prompt generation
+  - System now exclusively uses user-provided custom prompts
+  - Simplified backend logic to focus only on user creativity
+  - Added validation to ensure custom prompt is provided before generation
+✓ **Enhanced User Experience**: Improved frontend with better prompt guidance:
+  - Required field indicator with clear validation messages
+  - Detailed placeholder examples showing good prompt structure
+  - Toast notifications for missing prompts with helpful guidance
+  - Updated UI text to emphasize custom prompt requirement

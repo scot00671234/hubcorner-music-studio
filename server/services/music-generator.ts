@@ -25,16 +25,7 @@ export class MusicGenerator {
   private neuralComposer: NeuralComposer;
   private generationCount = 0;
   
-  private whiteArmorPrompts = [
-    "dreamy ambient trap beat, heavy reverb, slow BPM, ethereal atmosphere",
-    "floating soundscape, distorted vocals, pitch-shifted elements, lo-fi texture",
-    "celestial ambient music, reverb-heavy, emotional, off-grid timing",
-    "ethereal trap, filtered sounds, tape wobble, nostalgic atmosphere",
-    "ambient dreamscape, reversed delays, shimmer reverb, melancholic mood",
-    "floating beats, pitch-bent synths, heavy atmosphere, emotional depth",
-    "dreamy trap production, unsynced delays, filtered ambience, heartbroken",
-    "celestial soundscape, foggy atmosphere, reversed elements, ethereal mood"
-  ];
+
 
   constructor() {
     console.log("Initializing ML-powered music generation system...");
@@ -116,24 +107,9 @@ export class MusicGenerator {
   }
 
   private createEvolutionaryPrompt(settings: GenerationSettings): string {
-    // If user provided a custom prompt, use it with minimal evolution prefix
-    if (settings.customPrompt && settings.customPrompt.trim()) {
-      return `Generation ${this.generationCount}: ${settings.customPrompt.trim()}`;
-    }
-    
-    // Create more sophisticated prompts based on generation count and evolution
-    const evolutionaryTerms = [
-      `Generation ${this.generationCount}: evolved complexity`,
-      `Evolved harmony structure, generation ${this.generationCount}`,
-      `ML-enhanced composition #${this.generationCount}`,
-      `Neural network variation ${this.generationCount}`,
-      `Genetic algorithm output #${this.generationCount}`
-    ];
-    
-    const baseEvolution = evolutionaryTerms[this.generationCount % evolutionaryTerms.length];
-    const customPrompt = this.createCustomPrompt(settings);
-    
-    return `${baseEvolution}, ${customPrompt}`;
+    // Always use user's custom prompt with generation tracking
+    const userPrompt = this.createCustomPrompt(settings);
+    return `Generation ${this.generationCount}: ${userPrompt}`;
   }
 
   private getEvolutionaryTitle(): string {
@@ -266,52 +242,16 @@ export class MusicGenerator {
     return { audioBuffer, metadata };
   }
 
-  private getRandomPrompt(): string {
-    return this.whiteArmorPrompts[Math.floor(Math.random() * this.whiteArmorPrompts.length)];
-  }
+
 
   private createCustomPrompt(settings: any): string {
-    // If user provided a custom prompt, use it directly
+    // Only use user-provided custom prompts
     if (settings.customPrompt && settings.customPrompt.trim()) {
       return settings.customPrompt.trim();
     }
     
-    // Otherwise, generate automatic prompt based on settings
-    let basePrompt = this.getRandomPrompt();
-    
-    if (settings.mood) {
-      const moodMap: { [key: string]: string } = {
-        "dreamy": "dreamy, floating, ethereal",
-        "dark": "dark, brooding, mysterious",
-        "uplifting": "uplifting, celestial, hopeful",
-        "melancholic": "melancholic, heartbroken, nostalgic",
-        "ethereal": "ethereal, ghostly, otherworldly",
-        "nostalgic": "nostalgic, vintage, lo-fi"
-      };
-      basePrompt = `${moodMap[settings.mood] || "dreamy"} ambient trap beat`;
-    }
-    
-    if (settings.pace) {
-      if (settings.pace < 80) {
-        basePrompt += ", very slow BPM, languid tempo";
-      } else if (settings.pace > 120) {
-        basePrompt += ", uptempo, energetic rhythm";
-      } else {
-        basePrompt += ", slow BPM, relaxed pace";
-      }
-    }
-    
-    if (settings.reverb > 70) {
-      basePrompt += ", heavy reverb, spacious atmosphere";
-    } else if (settings.reverb < 30) {
-      basePrompt += ", dry sound, intimate space";
-    }
-    
-    if (settings.distortion > 50) {
-      basePrompt += ", distorted, gritty texture";
-    }
-    
-    return basePrompt;
+    // If no custom prompt provided, return a simple default request
+    return "Create an ambient music track";
   }
 
   private getRandomTitle(): string {

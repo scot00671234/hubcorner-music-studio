@@ -73,6 +73,14 @@ export function GenerationInterface() {
   });
 
   const handleGenerate = () => {
+    if (!settings.customPrompt?.trim()) {
+      toast({
+        title: "Custom Prompt Required",
+        description: "Please enter a custom prompt to describe the music you want to generate.",
+        variant: "destructive",
+      });
+      return;
+    }
     generateMutation.mutate();
   };
 
@@ -105,17 +113,19 @@ export function GenerationInterface() {
         <div className="mb-6">
           <div className="flex items-center space-x-2 mb-3">
             <Edit3 size={16} className="text-[hsl(351,78%,62%)]" />
-            <label className="text-sm font-medium text-white">Custom Prompt (Optional)</label>
+            <label className="text-sm font-medium text-white">
+              Custom Prompt <span className="text-[hsl(351,78%,62%)]">*</span>
+            </label>
           </div>
           <Textarea
             value={settings.customPrompt || ""}
             onChange={(e) => setSettings({...settings, customPrompt: e.target.value})}
-            placeholder="Write your own prompt like: dreamy ambient trap beat, heavy reverb, slow BPM, ethereal atmosphere..."
+            placeholder="Example: dreamy ambient trap beat, heavy reverb, slow BPM, ethereal atmosphere, floating soundscape, celestial ambient music..."
             className="bg-black/30 border-white/20 text-white placeholder-[hsl(0,0%,55%)] focus:border-[hsl(351,78%,62%)] focus:ring-[hsl(351,78%,62%)]/20 min-h-[80px] resize-none"
             rows={3}
           />
           <p className="text-xs text-[hsl(0,0%,55%)] mt-2">
-            Leave empty to use automatic prompts based on your mood and settings above
+            Describe the style, mood, and characteristics you want in your music. Be as creative and detailed as you like!
           </p>
         </div>
 
@@ -142,7 +152,7 @@ export function GenerationInterface() {
                 </span>
               </Button>
               <p className="text-[hsl(0,0%,72%)] text-sm mt-3 font-mono">
-                Customize your settings above, then click to generate
+                Write your custom prompt above, then click to generate
               </p>
             </>
           )}
