@@ -263,6 +263,152 @@ export class MusicGenerator {
     return Math.floor(Math.random() * 61) + 120;
   }
 
+  // Analyze custom prompt to extract musical characteristics
+  private analyzePrompt(prompt: string) {
+    const words = prompt.toLowerCase().split(/[\s,]+/);
+    
+    return {
+      tempo: this.extractTempo(words),
+      mood: this.extractMood(words),
+      style: this.extractStyle(words),
+      effects: this.extractEffects(words),
+      energy: this.extractEnergy(words),
+      randomSeed: Math.random() // Add randomness for each generation
+    };
+  }
+  
+  private extractTempo(words: string[]) {
+    if (words.some(w => ['slow', 'languid', 'dreamy'].includes(w))) return 'slow';
+    if (words.some(w => ['fast', 'uptempo', 'energetic'].includes(w))) return 'fast';
+    if (words.some(w => ['medium', 'moderate'].includes(w))) return 'medium';
+    return 'slow'; // Default for ambient
+  }
+  
+  private extractMood(words: string[]) {
+    if (words.some(w => ['dark', 'brooding', 'mysterious', 'ominous'].includes(w))) return 'dark';
+    if (words.some(w => ['happy', 'uplifting', 'bright', 'cheerful'].includes(w))) return 'uplifting';
+    if (words.some(w => ['sad', 'melancholic', 'somber', 'tragic'].includes(w))) return 'melancholic';
+    if (words.some(w => ['ethereal', 'ghostly', 'spiritual', 'otherworldly'].includes(w))) return 'ethereal';
+    if (words.some(w => ['nostalgic', 'vintage', 'retro', 'memory'].includes(w))) return 'nostalgic';
+    return 'dreamy'; // Default
+  }
+  
+  private extractStyle(words: string[]) {
+    if (words.some(w => ['trap', 'hip', 'hop', 'beats'].includes(w))) return 'trap';
+    if (words.some(w => ['ambient', 'atmospheric', 'soundscape'].includes(w))) return 'ambient';
+    if (words.some(w => ['electronic', 'synth', 'digital'].includes(w))) return 'electronic';
+    if (words.some(w => ['classical', 'orchestral', 'piano'].includes(w))) return 'classical';
+    return 'ambient'; // Default
+  }
+  
+  private extractEffects(words: string[]) {
+    const effects = [];
+    if (words.some(w => ['reverb', 'echo', 'spacious', 'hall'].includes(w))) effects.push('reverb');
+    if (words.some(w => ['distortion', 'gritty', 'harsh', 'dirty'].includes(w))) effects.push('distortion');
+    if (words.some(w => ['delay', 'repeat', 'echo'].includes(w))) effects.push('delay');
+    if (words.some(w => ['filter', 'sweep', 'wobble'].includes(w))) effects.push('filter');
+    return effects;
+  }
+  
+  private extractEnergy(words: string[]) {
+    if (words.some(w => ['high', 'intense', 'powerful', 'strong'].includes(w))) return 'high';
+    if (words.some(w => ['low', 'subtle', 'gentle', 'soft'].includes(w))) return 'low';
+    return 'medium';
+  }
+  
+  private selectKeyFromPrompt(keys: any[], analysis: any) {
+    // Use prompt analysis + randomness to select key
+    let keyIndex = Math.floor(analysis.randomSeed * keys.length);
+    
+    // Adjust based on mood
+    if (analysis.mood === 'dark') keyIndex = Math.min(keyIndex + 1, keys.length - 1);
+    if (analysis.mood === 'uplifting') keyIndex = Math.max(keyIndex - 1, 0);
+    
+    return keys[keyIndex];
+  }
+  
+  private generateChordProgression(rootFreq: number, analysis: any) {
+    // Create varied chord progressions based on analysis
+    const progressions = {
+      dreamy: [
+        { root: rootFreq, intervals: [1, 1.2, 1.5, 1.8], name: 'Em' },
+        { root: rootFreq * 1.335, intervals: [1, 1.2, 1.5, 1.8], name: 'Am' },
+        { root: rootFreq * 1.587, intervals: [1, 1.25, 1.5, 2.0], name: 'C' },
+        { root: rootFreq * 2.38, intervals: [1, 1.25, 1.5, 1.875], name: 'G' }
+      ],
+      dark: [
+        { root: rootFreq, intervals: [1, 1.189, 1.414, 1.681], name: 'Dm' },
+        { root: rootFreq * 1.189, intervals: [1, 1.189, 1.414, 1.681], name: 'Gm' },
+        { root: rootFreq * 1.414, intervals: [1, 1.260, 1.587, 1.887], name: 'Bb' },
+        { root: rootFreq * 1.681, intervals: [1, 1.189, 1.414, 1.681], name: 'Cm' }
+      ],
+      uplifting: [
+        { root: rootFreq, intervals: [1, 1.25, 1.5, 1.875], name: 'C' },
+        { root: rootFreq * 1.125, intervals: [1, 1.25, 1.5, 1.875], name: 'F' },
+        { root: rootFreq * 1.335, intervals: [1, 1.2, 1.5, 1.8], name: 'Am' },
+        { root: rootFreq * 1.498, intervals: [1, 1.25, 1.5, 1.875], name: 'G' }
+      ]
+    };
+    
+    const baseProgression = progressions[analysis.mood] || progressions.dreamy;
+    
+    // Add randomization to chord intervals
+    return baseProgression.map(chord => ({
+      ...chord,
+      intervals: chord.intervals.map(interval => 
+        interval * (0.98 + analysis.randomSeed * 0.04) // Slight detuning
+      )
+    }));
+  }
+  
+  private generateMelodicScale(analysis: any) {
+    const scales = {
+      dreamy: [1, 1.125, 1.2, 1.333, 1.5, 1.6, 1.8, 2.0],
+      dark: [1, 1.067, 1.2, 1.333, 1.5, 1.6, 1.778, 2.0],
+      uplifting: [1, 1.125, 1.26, 1.333, 1.5, 1.682, 1.888, 2.0],
+      ethereal: [1, 1.059, 1.189, 1.335, 1.498, 1.682, 1.888, 2.0]
+    };
+    
+    const baseScale = scales[analysis.mood] || scales.dreamy;
+    
+    // Add micro-variations
+    return baseScale.map(note => 
+      note * (0.995 + analysis.randomSeed * 0.01)
+    );
+  }
+  
+  private generateRhythmPatterns(analysis: any) {
+    // Generate unique rhythm patterns based on prompt
+    const patterns = {
+      trap: {
+        kick: [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        hihat: [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0],
+        snare: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+      },
+      ambient: {
+        kick: [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        hihat: [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        snare: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    };
+    
+    const basePattern = patterns[analysis.style] || patterns.ambient;
+    
+    // Randomize pattern slightly
+    const randomizePattern = (pattern: number[]) => 
+      pattern.map(beat => {
+        if (beat === 1) return Math.random() < 0.9 ? 1 : 0; // 90% chance to keep beats
+        if (beat === 0) return Math.random() < 0.1 ? 1 : 0; // 10% chance to add beats
+        return beat;
+      });
+    
+    return {
+      kick: randomizePattern(basePattern.kick),
+      hihat: randomizePattern(basePattern.hihat),
+      snare: randomizePattern(basePattern.snare)
+    };
+  }
+
   private generateSongStructure(duration: number) {
     // Create typical song structure based on duration
     const intro = { start: 0, end: Math.floor(duration * 0.15) };
@@ -327,29 +473,39 @@ export class MusicGenerator {
   }
 
   private async generatePlaceholderAudio(duration: number, settings: any = {}): Promise<Buffer> {
-    // Generate a complex ambient track with variation
+    // Generate a complex ambient track with HIGH VARIATION based on custom prompt and randomization
     const sampleRate = 44100;
     const samples = duration * sampleRate;
     const audioData = new Float32Array(samples);
     
-    // Whitearmor-style musical foundation
-    const rootFreq = 82.41; // E2 (common Whitearmor key)
+    // Parse custom prompt for musical characteristics
+    const prompt = settings.customPrompt || "ambient music";
+    const promptAnalysis = this.analyzePrompt(prompt);
     
-    // Em-Am-C-G progression (vi-ii-IV-I in G major) - signature Whitearmor progression
-    const chordProgression = [
-      { root: 82.41, intervals: [1, 1.2, 1.5, 1.8], name: 'Em' },      // E minor (0-25%)
-      { root: 110.0, intervals: [1, 1.2, 1.5, 1.8], name: 'Am' },      // A minor (25-50%)
-      { root: 130.81, intervals: [1, 1.25, 1.5, 2.0], name: 'C' },     // C major (50-75%)
-      { root: 196.0, intervals: [1, 1.25, 1.5, 1.875], name: 'G' }     // G major (75-100%)
+    // Randomized musical foundation that changes with each generation
+    const possibleKeys = [
+      { root: 82.41, name: 'E2' },     // E2 (Whitearmor classic)
+      { root: 98.0, name: 'G2' },      // G2 (darker)
+      { root: 73.42, name: 'D2' },     // D2 (melancholic)
+      { root: 87.31, name: 'F2' },     // F2 (dreamy)
+      { root: 110.0, name: 'A2' },     // A2 (uplifting)
+      { root: 123.47, name: 'B2' }     // B2 (ethereal)
     ];
     
-    // Whitearmor's characteristic scale (E natural minor with suspended and add9 chords)
-    const melodicScale = [1, 1.125, 1.2, 1.333, 1.5, 1.6, 1.8, 2.0]; // E natural minor extended
+    // Choose key based on prompt and randomization
+    const selectedKey = this.selectKeyFromPrompt(possibleKeys, promptAnalysis);
+    const rootFreq = selectedKey.root;
     
-    // Ambient trap rhythm patterns (sparse, Whitearmor-style)
-    const kickPattern = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0]; // Classic trap kick
-    const hihatPattern = [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0]; // Sparse hi-hats
-    const snarePattern = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]; // Minimal snare
+    // Dynamic chord progressions that vary based on prompt
+    const progressionVariations = this.generateChordProgression(rootFreq, promptAnalysis);
+    
+    // Randomized scales based on mood
+    const scaleVariations = this.generateMelodicScale(promptAnalysis);
+    
+    // Dynamic rhythm patterns with variation
+    const rhythmPatterns = this.generateRhythmPatterns(promptAnalysis);
+    
+    console.log(`Creating unique variation for prompt: "${prompt}" with key: ${selectedKey.name}`);
     
     // Extract settings with defaults
     const bassLevel = (settings.bass || 50) / 100;
@@ -375,7 +531,7 @@ export class MusicGenerator {
       
       // Determine current chord based on progression (4 chords over 30 seconds = 7.5s each)
       const chordIndex = Math.floor(progress * 4);
-      const currentChord = chordProgression[Math.min(chordIndex, 3)];
+      const currentChord = progressionVariations[Math.min(chordIndex, 3)];
       const chordProgress = (progress * 4) % 1; // Progress within current chord
       
       let signal = 0;
@@ -384,12 +540,12 @@ export class MusicGenerator {
       if (instruments.pads) {
         for (let voice = 0; voice < currentChord.intervals.length; voice++) {
           const freq = currentChord.root * currentChord.intervals[voice];
-          const voicePhase = voice * 0.7; // Slight phase offset per voice
+          const voicePhase = voice * 0.7 + promptAnalysis.randomSeed * 0.5; // Slight phase offset per voice
           const amplitude = 0.15 / (voice + 1) * (0.8 + 0.2 * Math.sin(t * 0.03 + voicePhase));
           
-          // Slow attack for dreamy pad sound
-          const attack = Math.min(chordProgress * 8, 1);
-          const sustain = 0.7 + 0.3 * Math.sin(t * 0.05 + voice);
+          // Slow attack for dreamy pad sound with variation
+          const attack = Math.min(chordProgress * (6 + promptAnalysis.randomSeed * 4), 1);
+          const sustain = 0.7 + 0.3 * Math.sin(t * 0.05 + voice + promptAnalysis.randomSeed);
           
           signal += Math.sin(2 * Math.PI * freq * t + voicePhase) * amplitude * attack * sustain;
         }
@@ -397,11 +553,11 @@ export class MusicGenerator {
       
       // MELODIC ARPEGGIOS (Whitearmor's signature floating melodies)
       if (instruments.arps) {
-        const arpSpeed = beatsPerSecond * 2; // Double time arpeggios
-        const arpIndex = Math.floor(t * arpSpeed) % melodicScale.length;
-        const arpFreq = rootFreq * 2 * melodicScale[arpIndex]; // Octave up
-        const arpEnvelope = Math.exp(-(t * arpSpeed % 1) * 4); // Pluck envelope
-        const arpGate = (t * arpSpeed % 1) < 0.3 ? 1 : 0; // Gate pattern
+        const arpSpeed = beatsPerSecond * (1.5 + promptAnalysis.randomSeed); // Variable speed arpeggios
+        const arpIndex = Math.floor(t * arpSpeed) % scaleVariations.length;
+        const arpFreq = rootFreq * 2 * scaleVariations[arpIndex]; // Octave up
+        const arpEnvelope = Math.exp(-(t * arpSpeed % 1) * (3 + promptAnalysis.randomSeed * 2)); // Variable envelope
+        const arpGate = (t * arpSpeed % 1) < (0.2 + promptAnalysis.randomSeed * 0.2) ? 1 : 0; // Variable gate
         
         signal += Math.sin(2 * Math.PI * arpFreq * t) * 0.08 * arpEnvelope * arpGate;
       }
@@ -411,87 +567,73 @@ export class MusicGenerator {
       if (instruments.bass) {
         const beatPosition = (t * beatsPerSecond) % 4;
         const beatIndex = Math.floor(beatPosition);
-        const beatDecay = Math.exp(-beatPosition * 1.5);
+        const beatDecay = Math.exp(-beatPosition * (1.2 + promptAnalysis.randomSeed * 0.6));
         
-        if (kickPattern[beatIndex % kickPattern.length]) {
+        if (rhythmPatterns.kick[beatIndex % rhythmPatterns.kick.length]) {
           const bassFreq = currentChord.root * 0.5; // Sub octave
           bass = Math.sin(2 * Math.PI * bassFreq * t) * 0.4 * bassLevel * beatDecay;
           
-          // Add harmonic for punch
-          bass += Math.sin(2 * Math.PI * bassFreq * 2 * t) * 0.1 * bassLevel * beatDecay;
+          // Add harmonic variation based on prompt
+          bass += Math.sin(2 * Math.PI * bassFreq * 2 * t) * 0.1 * bassLevel * beatDecay * (0.8 + promptAnalysis.randomSeed * 0.4);
         }
       }
       
-      // TRAP DRUMS (sparse, atmospheric)
+      // TRAP DRUMS (sparse, atmospheric, varied by prompt)
       let drums = 0;
       if (instruments.drums) {
-        const stepTime = t * beatsPerSecond * 4; // 16th note grid
-        const stepIndex = Math.floor(stepTime) % 16;
-        const stepDecay = Math.exp(-(stepTime % 1) * 8);
+        const stepIndex = Math.floor((t * beatsPerSecond * 4) % 16);
         
-        // Kick drum
-        if (kickPattern[stepIndex]) {
-          drums += Math.sin(2 * Math.PI * 60 * t) * 0.3 * stepDecay;
+        // Kick drum with variation
+        if (rhythmPatterns.kick[stepIndex]) {
+          const kickEnv = Math.exp(-((t * beatsPerSecond * 4) % 1) * 8);
+          drums += Math.sin(2 * Math.PI * 60 * t) * 0.3 * kickEnv * (0.9 + promptAnalysis.randomSeed * 0.2);
         }
         
-        // Hi-hats (filtered noise)
-        if (hihatPattern[stepIndex]) {
-          const hihatNoise = (Math.random() - 0.5) * 0.15 * stepDecay;
-          drums += hihatNoise * Math.sin(2 * Math.PI * 8000 * t); // High freq
+        // Hi-hats with variation
+        if (rhythmPatterns.hihat[stepIndex]) {
+          const hihatEnv = Math.exp(-((t * beatsPerSecond * 4) % 1) * 20);
+          const hihatFreq = 8000 + promptAnalysis.randomSeed * 2000; // Varied frequency
+          drums += (Math.random() - 0.5) * 0.05 * hihatEnv * (0.7 + promptAnalysis.randomSeed * 0.6);
         }
         
-        // Snare (rare, heavily processed)
-        if (snarePattern[stepIndex]) {
-          const snareNoise = (Math.random() - 0.5) * 0.2 * stepDecay;
-          const snareTone = Math.sin(2 * Math.PI * 200 * t) * 0.1 * stepDecay;
+        // Snare with variation
+        if (rhythmPatterns.snare[stepIndex]) {
+          const snareEnv = Math.exp(-((t * beatsPerSecond * 4) % 1) * 6);
+          const snareNoise = (Math.random() - 0.5) * 0.15 * snareEnv;
+          const snareTone = Math.sin(2 * Math.PI * (200 + promptAnalysis.randomSeed * 100) * t) * 0.1 * snareEnv;
           drums += snareNoise + snareTone;
         }
       }
       
-      // SYNTH LEADS (dreamy, detuned)
-      if (instruments.synths) {
-        const leadPhase = t * 0.3; // Slow evolution
-        const leadFreq = currentChord.root * 4 * (1 + Math.sin(leadPhase) * 0.02); // Slight detune
-        const leadEnv = 0.5 + 0.5 * Math.sin(t * 0.1);
-        
-        signal += Math.sin(2 * Math.PI * leadFreq * t) * 0.05 * leadEnv;
-        signal += Math.sin(2 * Math.PI * leadFreq * 1.007 * t) * 0.05 * leadEnv; // Detuned layer
-      }
+      // Combine all elements
+      signal += bass + drums;
       
-      // ATMOSPHERIC TEXTURES
-      const windNoise = (Math.random() - 0.5) * 0.02 * (0.3 + 0.7 * Math.sin(t * 0.02));
-      const sparkles = Math.sin(2 * Math.PI * 1000 * t + Math.sin(t * 13) * 3) * 0.01 * Math.sin(t * 0.7);
+      // Apply prompt-based effects variations
+      let finalSignal = signal;
       
-      // REVERB PROCESSING (Essential for Whitearmor sound)
-      const drySignal = signal + bass + drums;
-      const delayedSignal = delayBuffer[delayIndex];
-      const feedback = delayedSignal * 0.6 * reverbLevel;
-      const reverbSignal = drySignal + feedback;
-      
-      // Update delay buffer
-      delayBuffer[delayIndex] = drySignal + feedback * 0.3;
+      // REVERB/DELAY (Whitearmor's signature spaciousness) - varied by prompt
+      const delayAmount = reverbLevel * (0.7 + promptAnalysis.randomSeed * 0.6);
+      const delayedSample = delayBuffer[delayIndex];
+      delayBuffer[delayIndex] = signal + delayedSample * delayAmount * 0.3;
+      finalSignal += delayedSample * delayAmount;
       delayIndex = (delayIndex + 1) % delayBufferSize;
       
-      // TAPE SATURATION (Whitearmor's vintage character)
-      let processed = reverbSignal + windNoise + sparkles;
-      processed = Math.tanh(processed * 1.2) * 0.8; // Subtle saturation
-      
-      // DISTORTION (if enabled)
+      // DISTORTION (subtle tape saturation) - varied by prompt
       if (distortionLevel > 0) {
-        processed = Math.tanh(processed * (1 + distortionLevel * 3)) * (1 - distortionLevel * 0.2);
+        const saturationAmount = distortionLevel * (0.5 + promptAnalysis.randomSeed * 0.5);
+        finalSignal = Math.tanh(finalSignal * (1 + saturationAmount * 3)) / (1 + saturationAmount);
       }
       
-      // DYNAMIC FILTERING (recreate that "underwater" Whitearmor feel)
-      const cutoffMod = 0.7 + 0.3 * Math.sin(t * 0.05);
-      const highFreqRoll = Math.min(1, cutoffMod + progress * 0.3);
+      // FADE IN/OUT with variation
+      let envelope = 1;
+      if (t < fadeInTime) {
+        envelope = t / fadeInTime;
+      } else if (t > duration - fadeOutTime) {
+        envelope = (duration - t) / fadeOutTime;
+      }
       
-      // ENVELOPE (custom fade times)
-      const fadeIn = Math.min(t / fadeInTime, 1);
-      const fadeOut = Math.min((duration - t) / fadeOutTime, 1);
-      const envelope = fadeIn * fadeOut;
-      
-      // Final mix with Whitearmor-style dynamics
-      audioData[i] = processed * envelope * highFreqRoll * 0.6;
+      // Apply envelope and store
+      audioData[i] = finalSignal * envelope * 0.3; // Master volume
     }
     
     return this.createWAVBuffer(audioData, sampleRate);
