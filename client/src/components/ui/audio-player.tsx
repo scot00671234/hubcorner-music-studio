@@ -24,16 +24,51 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
     if (!audio) return;
 
     const updateTime = () => setCurrentTime(audio.currentTime);
-    const handleEnded = () => setIsPlaying(false);
+    const handleEnded = () => {
+      console.log("Audio ended - duration:", audio.duration, "currentTime:", audio.currentTime);
+      setIsPlaying(false);
+    };
+    const handleError = (e: Event) => {
+      console.error("Audio error:", e);
+      setIsPlaying(false);
+      toast({
+        title: "Audio Error",
+        description: "Audio playback encountered an error",
+        variant: "destructive",
+      });
+    };
+    const handleStalled = () => {
+      console.log("Audio stalled - currentTime:", audio.currentTime, "duration:", audio.duration);
+    };
+    const handleSuspend = () => {
+      console.log("Audio suspended - currentTime:", audio.currentTime, "duration:", audio.duration);
+    };
+    const handlePause = () => {
+      console.log("Audio paused - currentTime:", audio.currentTime, "duration:", audio.duration);
+      setIsPlaying(false);
+    };
+    const handleLoadedMetadata = () => {
+      console.log("Audio metadata loaded - duration:", audio.duration);
+    };
 
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("error", handleError);
+    audio.addEventListener("stalled", handleStalled);
+    audio.addEventListener("suspend", handleSuspend);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
 
     return () => {
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("error", handleError);
+      audio.removeEventListener("stalled", handleStalled);
+      audio.removeEventListener("suspend", handleSuspend);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
     };
-  }, [track]);
+  }, [track, toast]);
 
   const togglePlayPause = async () => {
     const audio = audioRef.current;
@@ -44,14 +79,32 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
         audio.pause();
         setIsPlaying(false);
       } else {
+        console.log("Starting playback - readyState:", audio.readyState, "duration:", audio.duration);
+        
+        // Reset audio to beginning if it ended
+        if (audio.currentTime >= audio.duration && audio.duration > 0) {
+          audio.currentTime = 0;
+        }
+        
         // Ensure audio is loaded
         if (audio.readyState < 2) {
-          await new Promise((resolve) => {
-            audio.addEventListener('canplay', resolve, { once: true });
+          console.log("Loading audio...");
+          await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+              reject(new Error("Audio loading timeout"));
+            }, 10000);
+            
+            audio.addEventListener('canplay', () => {
+              clearTimeout(timeout);
+              console.log("Audio can play - duration:", audio.duration);
+              resolve(true);
+            }, { once: true });
+            
             audio.load();
           });
         }
         
+        console.log("Playing audio - currentTime:", audio.currentTime, "duration:", audio.duration);
         await audio.play();
         setIsPlaying(true);
       }
