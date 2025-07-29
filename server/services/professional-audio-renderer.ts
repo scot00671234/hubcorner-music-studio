@@ -4,8 +4,8 @@
  * This system renders high-quality audio using advanced synthesis techniques,
  * proper effects processing, and professional mixing principles.
  * 
- * Implements techniques used by Whitearmor (CS1X, SP-404, Ableton Live)
- * and modern professional audio synthesis.
+ * Implements modern professional audio synthesis techniques using
+ * advanced synthesis algorithms and effects processing.
  */
 
 import { MusicTheoryAnalysis, SynthLayer, EffectsChain } from './professional-music-engine';

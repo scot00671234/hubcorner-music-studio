@@ -54,7 +54,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { audioBuffer, metadata } = await musicGenerator.generateSong(musicSettings);
       
       // Process audio with Whitearmor-style effects
-      const processedAudio = await audioProcessor.applyWhitearmorEffects(audioBuffer);
+      const processedAudio = await audioProcessor.applyProfessionalEffects(audioBuffer);
       
       // Save the processed audio file
       const fileName = `track_${Date.now()}.wav`;

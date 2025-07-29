@@ -36,16 +36,16 @@ export class MusicGenerator {
   }
 
   private songTitles = [
-    "Ethereal Dreamscape",
-    "Floating Through Dreams", 
-    "Midnight Reverie",
-    "Celestial Drift",
-    "Foggy Memories",
-    "Heartbroken Angels",
-    "Cosmic Solitude",
-    "Drifting Clouds",
-    "Melancholic Stars",
-    "Ambient Tears"
+    "Digital Symphony",
+    "Algorithmic Harmony", 
+    "Neural Composition",
+    "Generated Melody",
+    "AI Soundscape",
+    "Electronic Creation",
+    "Synthetic Rhythm",
+    "Computed Music",
+    "Automated Groove",
+    "Machine Song"
   ];
 
   async generateSong(settings: GenerationSettings = this.getDefaultSettings()): Promise<{ audioBuffer: Buffer; metadata: GenerationMetadata }> {

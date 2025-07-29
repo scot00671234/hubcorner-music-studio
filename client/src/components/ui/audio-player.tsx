@@ -137,7 +137,7 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
       if (navigator.share) {
         await navigator.share({
           title: track.title,
-          text: `Check out this AI-generated Whitearmor-style track: ${track.title}`,
+          text: `Check out this AI-generated track: ${track.title}`,
           url: window.location.href,
         });
       } else {

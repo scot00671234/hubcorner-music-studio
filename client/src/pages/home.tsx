@@ -24,8 +24,8 @@ export default function Home() {
               <Music className="text-white text-lg" size={20} />
             </div>
             <div>
-              <h1 className="text-xl font-semibold">Whitearmor AI</h1>
-              <p className="text-[hsl(0,0%,72%)] text-sm">Autonomous Music Generation</p>
+              <h1 className="text-xl font-semibold">Auto Composer</h1>
+              <p className="text-[hsl(0,0%,72%)] text-sm">AI Music Generation</p>
             </div>
           </div>
           <div className="flex items-center space-x-4">
@@ -46,11 +46,11 @@ export default function Home() {
           {/* Hero Section */}
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-[hsl(0,0%,72%)] bg-clip-text text-transparent">
-              Dreamy. Ambient. Ethereal.
+              Create. Compose. Generate.
             </h2>
             <p className="text-[hsl(0,0%,72%)] text-lg max-w-2xl mx-auto leading-relaxed">
-              Generate complete 2-3 minute songs in the signature Whitearmor style. 
-              One click, zero manual input, pure atmospheric bliss.
+              Generate professional-quality music across multiple genres and styles. 
+              One click, infinite possibilities, pure musical creativity.
             </p>
           </div>
 

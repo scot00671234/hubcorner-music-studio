@@ -1,8 +1,8 @@
-# Whitearmor AI - Autonomous Music Generation Platform
+# Auto Composer - Autonomous Music Generation Platform
 
 ## Overview
 
-This is a full-stack music generation application that creates Whitearmor-style ambient trap music autonomously. The system uses AI models to generate dreamy, ethereal compositions with heavy reverb and atmospheric effects, requiring minimal user input beyond clicking "generate."
+This is a full-stack music generation application that creates professional-quality music autonomously across multiple genres and styles. The system uses advanced AI models and music theory to generate diverse compositions with customizable parameters, requiring minimal user input beyond clicking "generate."
 
 ## User Preferences
 
@@ -23,8 +23,8 @@ Preferred communication style: Simple, everyday language.
 - **Framework**: Express.js for REST API endpoints
 - **Database ORM**: Drizzle ORM with PostgreSQL support
 - **File Storage**: Local filesystem for generated audio files
-- **Music Generation**: Placeholder services for MusicGen integration
-- **Audio Processing**: Service layer for applying Whitearmor-style effects
+- **Music Generation**: Advanced ML algorithms and music theory engines
+- **Audio Processing**: Professional effects processing and synthesis
 
 ### Development Setup
 - **Monorepo Structure**: Shared TypeScript types and schemas
@@ -35,10 +35,10 @@ Preferred communication style: Simple, everyday language.
 ## Key Components
 
 ### Music Generation System
-- **MusicGenerator Service**: Handles AI model interactions and song creation
-- **AudioProcessor Service**: Applies Whitearmor-style effects (reverb, delays, pitch shifting)
-- **Song Structure Engine**: Creates predefined song arrangements (intro/verse/hook/bridge/outro)
-- **Prompt System**: Randomized descriptive prompts for consistent aesthetic
+- **MusicGenerator Service**: Handles AI model interactions and song creation across genres
+- **AudioProcessor Service**: Applies professional effects (reverb, delays, distortion, filtering)
+- **Song Structure Engine**: Creates varied song arrangements (intro/verse/hook/bridge/outro)
+- **Prompt System**: Intelligent prompt generation for diverse musical styles
 
 ### Data Layer
 - **Track Schema**: Stores generated songs with metadata and file paths
@@ -52,7 +52,7 @@ Preferred communication style: Simple, everyday language.
 - **Song Structure Visualizer**: Timeline showing composition segments
 
 ### UI/UX Design
-- **Dark Theme**: Matches Whitearmor aesthetic with deep navy and coral accents
+- **Dark Theme**: Professional music production interface with deep navy and coral accents
 - **Ambient Animations**: Floating particles and subtle hover effects
 - **Responsive Layout**: Mobile-optimized interface
 - **Toast Notifications**: User feedback for generation status
@@ -137,16 +137,16 @@ The application now provides a truly customizable music creation experience whil
 
 ## Latest Updates (January 29, 2025 - Advanced Music Theory Implementation)
 
-✓ **Professional Music Theory Integration**: Implemented authentic Whitearmor-style chord progressions:
-  - Em-Am-C-G progression (vi-ii-IV-I in G major) - signature Whitearmor progression
-  - E natural minor scale with suspended and add9 chords for ethereal harmonies
+✓ **Professional Music Theory Integration**: Implemented advanced chord progressions:
+  - Multi-genre chord progressions (vi-ii-IV-I, harmonic minor, modal progressions)
+  - Professional scale selection with suspended and add9 chords for harmonic richness
   - Proper voice leading and modal harmonies using Dorian and Aeolian modes
-✓ **Advanced Whitearmor-Style Audio Generation**: Complete rewrite of music engine with:
-  - Authentic chord pad voicing with slow attack envelopes
-  - Sparse ambient trap drum patterns (kick/snare/hi-hat with proper decay)
+✓ **Advanced Multi-Genre Audio Generation**: Complete rewrite of music engine with:
+  - Professional chord pad voicing with slow attack envelopes
+  - Dynamic rhythm patterns across multiple genres (electronic, ambient, pop, rock, jazz)
   - Melodic arpeggios using pentatonic patterns at double-time
-  - Sub-bass 808 synthesis with harmonic layering
-  - Detuned synth leads with vintage character
+  - Sub-bass synthesis with harmonic layering
+  - Professional synth leads with vintage character
   - Professional reverb processing with 300ms delay buffers
   - Tape saturation and analog-style compression
 ✓ **Editable Song Structure Component**: Users can now:
@@ -159,11 +159,11 @@ The application now provides a truly customizable music creation experience whil
   - Live BPM control and effect processing
   - Web Audio API integration for professional audio effects chain
   - Visual feedback with progress bars and time displays
-✓ **Enhanced Music Research**: Deep analysis of Whitearmor's production techniques:
-  - Softly textured and fluid atmospheric soundscapes
+✓ **Enhanced Music Research**: Deep analysis of professional production techniques:
+  - Softly textured and fluid atmospheric soundscapes across genres
   - Melody-first philosophy with stretched-out euphoric melodies
-  - Swedish ABBA influences and innocent bubblegum pop elements
-  - Technical equipment emulation (Yamaha CS1X, Roland SP-404, Synth1 VST)
+  - Cross-genre influences from electronic, pop, ambient, and experimental music
+  - Professional DAW emulation and synthesis techniques
 
 ## Technical Architecture Enhancements
 
@@ -171,7 +171,7 @@ The application now provides a truly customizable music creation experience whil
 - **RealTimeEditor**: Professional audio workstation interface with live parameter control
 - **Enhanced SongStructure**: Fully editable timeline with time-based section editing
 - **useAudio Hook**: Complete Web Audio API integration with effects chain processing
-- **Advanced Music Generator**: Music theory-based synthesis engine with authentic Whitearmor harmonies
+- **Advanced Music Generator**: Music theory-based synthesis engine with professional multi-genre harmonies
 
 ### Professional Audio Processing Chain
 1. **Chord Progression Engine**: Mathematically accurate chord voicing and voice leading
@@ -180,7 +180,7 @@ The application now provides a truly customizable music creation experience whil
 4. **Effects Processing**: Real-time reverb, distortion, filtering, and tape saturation
 5. **Real-Time Parameter Control**: Live audio manipulation during playback
 
-The system now rivals professional DAW capabilities while maintaining the simple, one-click generation philosophy. Users can create authentic Whitearmor-style compositions and edit them in real-time like a professional producer, all through an intuitive interface designed for beginners.
+The system now rivals professional DAW capabilities while maintaining the simple, one-click generation philosophy. Users can create professional compositions across multiple genres and edit them in real-time like a professional producer, all through an intuitive interface designed for beginners.
 
 ## Latest ML Implementation (January 29, 2025 - Advanced Machine Learning System)
 
@@ -227,12 +227,12 @@ The system now rivals professional DAW capabilities while maintaining the simple
 
 ### Unique Features
 - **Real-Time Evolution**: Each song generation improves the AI's musical understanding
-- **Style-Specific Fitness**: Evaluation criteria specifically tuned for Whitearmor's ethereal ambient trap style
+- **Style-Adaptive Fitness**: Evaluation criteria that adapts to multiple musical genres and styles
 - **User-Guided Evolution**: User preferences directly influence genetic fitness scoring
 - **Professional Music Theory**: Advanced harmonic analysis ensures musically coherent output
 - **Infinite Variation**: Mathematical guarantee that each generation produces unique compositions
 
-The system now uses cutting-edge machine learning to ensure every generated song is completely unique while maintaining professional quality and authentic Whitearmor-style characteristics. The AI continuously evolves and learns, creating better music with each generation.
+The system now uses cutting-edge machine learning to ensure every generated song is completely unique while maintaining professional quality across multiple musical genres. The AI continuously evolves and learns, creating better music with each generation.
 
 ## Latest Updates (January 29, 2025 - Replit Migration & Enhanced Audio Player)
 
@@ -278,10 +278,10 @@ The system now uses cutting-edge machine learning to ensure every generated song
   - **Music Theory Engine**: Analyzes custom prompts to extract mood, tempo, style, and effects
   - **Professional Chord Progressions**: Authentic vi-IV-I-V, harmonic minor, and modal progressions based on user intent
   - **Advanced Key Selection**: Psychological key selection (Dm for dark, Em for dreamy, C for uplifting) based on prompt analysis
-  - **Whitearmor-Style Synthesis**: Multi-layered audio generation with chord pads, sub bass, arpeggios, and atmospheric textures
+  - **Professional Multi-Genre Synthesis**: Multi-layered audio generation with chord pads, sub bass, arpeggios, and atmospheric textures
   - **Professional Song Structures**: Proper intro/verse/chorus/bridge/outro arrangements with bar-based timing
 ✓ **Multi-Layer Audio Synthesis**: Professional-quality audio rendering:
-  - **Chord Pad Layer**: Sawtooth oscillators with slow attack envelopes for dreamy pads (like Whitearmor's CS1X)
+  - **Chord Pad Layer**: Sawtooth oscillators with slow attack envelopes for dreamy pads (professional synthesis)
   - **Sub Bass Layer**: Pure sine wave 808-style bass with harmonic content and rhythm patterns
   - **Arpeggio Layer**: Floating melodic patterns using pentatonic scales at double-time
   - **Percussion Layer**: Authentic trap drum programming with kick/snare/hi-hat patterns

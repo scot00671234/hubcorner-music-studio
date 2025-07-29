@@ -142,7 +142,7 @@ export class AdvancedMusicGenerator {
       // Music theory compliance (30% of fitness)
       fitness += this.evaluateHarmonyCompliance(genome) * 0.3;
       
-      // Whitearmor style authenticity (25% of fitness)
+      // Musical style authenticity (25% of fitness)
       fitness += this.evaluateStyleAuthenticity(genome, settings) * 0.25;
       
       // Variation and uniqueness (25% of fitness)

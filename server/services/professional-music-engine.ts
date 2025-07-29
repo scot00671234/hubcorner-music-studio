@@ -2,10 +2,10 @@
  * Professional Music Generation Engine
  * 
  * This system implements professional music theory, advanced synthesis techniques,
- * and Whitearmor-style ambient trap production to create high-quality, structured music.
+ * and multi-genre music production to create high-quality, structured compositions.
  * 
  * Based on research of Meta's MusicGen architecture, professional music theory,
- * and Whitearmor's production techniques using Ableton Live + hardware synths.
+ * and modern production techniques using professional DAWs and synthesis.
  */
 
 export interface MusicTheoryAnalysis {
@@ -15,7 +15,7 @@ export interface MusicTheoryAnalysis {
   songStructure: ProfessionalSongStructure;
   tempo: number;
   mood: 'dreamy' | 'dark' | 'uplifting' | 'melancholic' | 'ethereal' | 'nostalgic';
-  style: 'ambient-trap' | 'electronic' | 'trap' | 'ambient';
+  style: 'electronic' | 'ambient' | 'pop' | 'rock' | 'jazz' | 'classical' | 'experimental';
   harmonicComplexity: 'simple' | 'medium' | 'complex';
 }
 
@@ -66,7 +66,7 @@ export class MusicTheoryEngine {
   
   // Professional chord progressions by genre and mood
   private static readonly CHORD_PROGRESSIONS = {
-    'ambient-trap': {
+    'electronic': {
       dreamy: [
         { progression: ['vi', 'IV', 'I', 'V'], name: 'vi-IV-I-V (Melancholic)', popularity: 0.9 },
         { progression: ['i', 'VI', 'III', 'VII'], name: 'Natural Minor Classic', popularity: 0.8 },
@@ -87,24 +87,24 @@ export class MusicTheoryEngine {
 
   // Authentic scales used in professional music
   private static readonly SCALES = {
-    'natural-minor': [0, 2, 3, 5, 7, 8, 10], // Whitearmor's primary scale
-    'harmonic-minor': [0, 2, 3, 5, 7, 8, 11], // Creates tension for trap
+    'natural-minor': [0, 2, 3, 5, 7, 8, 10], // Natural minor scale for emotional depth
+    'harmonic-minor': [0, 2, 3, 5, 7, 8, 11], // Creates tension and resolution
     'dorian': [0, 2, 3, 5, 7, 9, 10], // Ambient/ethereal character
-    'phrygian': [0, 1, 3, 5, 7, 8, 10], // Dark, Spanish/Arabic flavor
+    'phrygian': [0, 1, 3, 5, 7, 8, 10], // Dark, exotic flavor
     'major': [0, 2, 4, 5, 7, 9, 11], // For uplifting sections
     'pentatonic-minor': [0, 3, 5, 7, 10] // For melodies and arpeggios
   };
 
   // Professional song structures based on research
   private static readonly SONG_STRUCTURES = {
-    'ambient-trap': {
+    'electronic': {
       form: 'verse-chorus',
       sections: {
-        intro: { bars: 8, description: 'Atmospheric pad introduction, soft percussion entry' },
+        intro: { bars: 8, description: 'Atmospheric introduction, gradual element entry' },
         verse: { bars: 16, description: 'Main harmonic progression, melodic development' },
         chorus: { bars: 8, description: 'Peak energy, full arrangement, hook melody' },
-        bridge: { bars: 8, description: 'Contrasting harmony, breakdown or filter sweep' },
-        outro: { bars: 8, description: 'Fade with reverb tail, atmospheric decay' }
+        bridge: { bars: 8, description: 'Contrasting harmony, creative breakdown' },
+        outro: { bars: 8, description: 'Fade with effects, atmospheric decay' }
       }
     }
   };
@@ -161,14 +161,17 @@ export class MusicTheoryEngine {
       }
     }
     
-    return 'dreamy'; // Default for ambient trap
+    return 'dreamy'; // Default mood
   }
 
   private static extractMusicStyle(words: string[]): MusicTheoryAnalysis['style'] {
-    if (words.some(w => ['trap', 'hip', 'hop', 'beats', '808'].includes(w))) return 'trap';
+    if (words.some(w => ['pop', 'catchy', 'mainstream', 'commercial'].includes(w))) return 'pop';
     if (words.some(w => ['electronic', 'synth', 'digital', 'edm'].includes(w))) return 'electronic';
     if (words.some(w => ['ambient', 'atmospheric', 'drone', 'soundscape'].includes(w))) return 'ambient';
-    return 'ambient-trap'; // Default Whitearmor style
+    if (words.some(w => ['rock', 'guitar', 'band', 'drums'].includes(w))) return 'rock';
+    if (words.some(w => ['jazz', 'swing', 'blues', 'improvisation'].includes(w))) return 'jazz';
+    if (words.some(w => ['classical', 'orchestral', 'symphony', 'opera'].includes(w))) return 'classical';
+    return 'electronic'; // Default style
   }
 
   private static selectProfessionalKey(mood: string, style: string): string {
@@ -219,7 +222,7 @@ export class MusicTheoryEngine {
     mood: string, 
     style: string
   ): ChordProgression[] {
-    const progressionData = this.CHORD_PROGRESSIONS['ambient-trap'][mood as keyof typeof this.CHORD_PROGRESSIONS['ambient-trap']];
+    const progressionData = this.CHORD_PROGRESSIONS['electronic'][mood as keyof typeof this.CHORD_PROGRESSIONS['electronic']];
     const selectedProgression = progressionData[Math.floor(Math.random() * progressionData.length)];
     
     const rootNote = this.parseKey(key);
@@ -318,7 +321,7 @@ export class MusicTheoryEngine {
   }
 
   private static createProfessionalStructure(style: string, tempo: number): ProfessionalSongStructure {
-    const baseStructure = this.SONG_STRUCTURES['ambient-trap'];
+    const baseStructure = this.SONG_STRUCTURES['electronic'];
     
     // Adjust bar lengths based on tempo (slower = longer sections)
     const tempoMultiplier = tempo < 80 ? 1.5 : tempo > 120 ? 0.8 : 1.0;
@@ -370,7 +373,7 @@ export class MusicTheoryEngine {
 
 /**
  * Professional Audio Synthesis Engine
- * Implements advanced synthesis techniques based on Whitearmor's documented equipment
+ * Implements advanced synthesis techniques for professional music production
  */
 export class ProfessionalSynthEngine {
   
@@ -380,22 +383,22 @@ export class ProfessionalSynthEngine {
   public static createSynthLayers(analysis: MusicTheoryAnalysis, settings: any): SynthLayer[] {
     const layers: SynthLayer[] = [];
 
-    // WHITEARMOR-STYLE CHORD PADS (Primary layer)
+    // PROFESSIONAL CHORD PADS (Primary harmonic layer)
     if (settings.instruments.pads) {
       layers.push(this.createChordPadLayer(analysis, settings));
     }
 
-    // SUB BASS (808-style with harmonic content)
+    // SUB BASS (Professional bass synthesis)
     if (settings.instruments.bass) {
       layers.push(this.createProfessionalBassLayer(analysis, settings));
     }
 
-    // MELODIC ARPEGGIOS (Whitearmor's signature floating melodies)
+    // MELODIC ARPEGGIOS (Floating melodic patterns)
     if (settings.instruments.arps) {
       layers.push(this.createArpeggioLayer(analysis, settings));
     }
 
-    // AMBIENT TRAP PERCUSSION
+    // RHYTHMIC PERCUSSION
     if (settings.instruments.drums) {
       layers.push(this.createTrapPercussionLayer(analysis, settings));
     }
@@ -414,7 +417,7 @@ export class ProfessionalSynthEngine {
   private static createChordPadLayer(analysis: MusicTheoryAnalysis, settings: any): SynthLayer {
     return {
       type: 'pad',
-      oscillator: 'sawtooth', // Rich harmonic content like CS1X
+      oscillator: 'sawtooth', // Rich harmonic content for professional sound
       envelope: { 
         attack: 2.0, // Slow attack for dreamy pads
         decay: 0.5, 
@@ -439,7 +442,7 @@ export class ProfessionalSynthEngine {
         },
         distortion: { 
           amount: settings.distortion / 100, 
-          type: 'tape' // Whitearmor's vintage character
+          type: 'tape' // Vintage character
         },
         chorus: { 
           rate: 0.5, 
