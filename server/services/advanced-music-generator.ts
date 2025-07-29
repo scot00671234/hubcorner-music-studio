@@ -349,25 +349,9 @@ export class AdvancedMusicGenerator {
     structure: SongStructure, 
     settings: GenerationSettings
   ): Promise<AudioBuffer> {
-    const audioContext = new AudioContext();
-    const sampleRate = audioContext.sampleRate;
-    const duration = this.calculateTotalDuration(structure);
-    const buffer = audioContext.createBuffer(2, duration * sampleRate, sampleRate);
-    
-    // Generate each section using evolved genetics
-    let currentTime = 0;
-    
-    for (const section of structure.sections) {
-      const sectionBuffer = await this.generateSection(
-        genome, section, settings, audioContext
-      );
-      
-      // Mix section into main buffer
-      this.mixBuffers(buffer, sectionBuffer, currentTime);
-      currentTime += section.duration;
-    }
-    
-    return buffer;
+    // AudioContext is not available in Node.js - this is client-side only
+    // For server-side synthesis, we need to use a different approach
+    throw new Error("AudioContext synthesis not available in server environment");
   }
 
   private async generateSection(

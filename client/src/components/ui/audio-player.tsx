@@ -12,9 +12,11 @@ interface AudioPlayerProps {
 export function AudioPlayer({ track }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -102,6 +104,49 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
     }
   };
 
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const audio = audioRef.current;
+    const progressBar = progressRef.current;
+    if (!audio || !progressBar) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = clickX / rect.width;
+    const newTime = percentage * track.duration;
+    
+    audio.currentTime = Math.max(0, Math.min(newTime, track.duration));
+    setCurrentTime(audio.currentTime);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      const progressBar = progressRef.current;
+      if (!progressBar) return;
+
+      const rect = progressBar.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(1, x / rect.width));
+      const newTime = percentage * track.duration;
+      
+      setCurrentTime(newTime);
+      if (audioRef.current) {
+        audioRef.current.currentTime = newTime;
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
@@ -135,10 +180,19 @@ export function AudioPlayer({ track }: AudioPlayerProps) {
           
           <div className="flex items-center space-x-2 text-sm font-mono text-[hsl(0,0%,72%)]">
             <span>{formatTime(currentTime)}</span>
-            <div className="w-48 h-1 bg-white/20 rounded-full relative">
+            <div 
+              ref={progressRef}
+              className="w-48 h-1 bg-white/20 rounded-full relative cursor-pointer"
+              onClick={handleProgressClick}
+              onMouseDown={handleMouseDown}
+            >
               <div 
-                className="absolute left-0 top-0 h-full bg-[hsl(351,78%,62%)] rounded-full transition-all duration-300"
+                className={`absolute left-0 top-0 h-full bg-[hsl(351,78%,62%)] rounded-full transition-all ${isDragging ? 'duration-75' : 'duration-150'}`}
                 style={{ width: `${progressPercentage}%` }}
+              />
+              <div 
+                className={`absolute top-1/2 w-3 h-3 bg-[hsl(351,78%,62%)] rounded-full transform -translate-y-1/2 -translate-x-1/2 transition-opacity ${isDragging ? 'opacity-100 scale-110' : 'opacity-0 hover:opacity-100'} cursor-grab active:cursor-grabbing`}
+                style={{ left: `${progressPercentage}%` }}
               />
             </div>
             <span>{formatTime(track.duration)}</span>
